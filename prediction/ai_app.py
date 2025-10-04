@@ -1,13 +1,23 @@
+import os
+from dotenv import load_dotenv
 import gradio as gr
 import joblib
 import pandas as pd
 import numpy as np
 from openai import OpenAI
 
-# Initialize OpenAI client
+# Load .env from project root
+load_dotenv()  # <-- must be called before reading os.getenv
+
+API_KEY = os.getenv("API_KEY")          # matches the name in .env
+BASE_URL = os.getenv("BASE_URL", "https://api.aimlapi.com/v1")
+
+if not API_KEY:
+    raise RuntimeError("API_KEY not found in environment. Did you create a .env and call load_dotenv()?")
+
 client = OpenAI(
-    base_url="https://api.aimlapi.com/v1",
-    api_key="65d485568e144a4da31822ecd136e44d",    
+    base_url=BASE_URL,
+    api_key=API_KEY,
 )
 
 # Load the trained model and preprocessing objects
