@@ -48,3 +48,4 @@ Same for radius, mass, metallicity, logg.
 
 - sy_gaiamag → Gaia magnitude.
 
+
