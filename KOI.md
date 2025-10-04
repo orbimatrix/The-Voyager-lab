@@ -30,4 +30,5 @@ These are like warning lights 🚨 telling scientists why something might not be
 
 - koi_fpflag_co → Could be caused by contamination (light blending).
 
+
 - koi_fpflag_ec → Might be caused by an eclipsing binary star (two stars blocking each other).
