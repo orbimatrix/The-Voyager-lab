@@ -5,6 +5,7 @@ import joblib
 import pandas as pd
 import numpy as np
 from openai import OpenAI
+from PIL import Image
 
 # Load .env from project root
 load_dotenv()  # <-- must be called before reading os.getenv
@@ -15,10 +16,16 @@ BASE_URL = os.getenv("BASE_URL", "https://api.aimlapi.com/v1")
 if not API_KEY:
     raise RuntimeError("API_KEY not found in environment. Did you create a .env and call load_dotenv()?")
 
+
+
 client = OpenAI(
     base_url=BASE_URL,
     api_key=API_KEY,
 )
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+image_path = os.path.join(BASE_DIR, "Images", "planet_radius.png")
+
+
 
 # Load the trained model and preprocessing objects
 model = joblib.load('exoplanet_model.pkl')
@@ -298,6 +305,59 @@ with gr.Blocks(title="Exoplanet Detection System", theme=gr.themes.Soft()) as de
         extensive follow-up observations and validation.
         """
     )
+    gr.Markdown("### Data Visualization of Kepler Dataset")
+    # with gr.Row():
+
+    gr.Image(value="planet_radius.png", show_label=False)
+    gr.Markdown("""
+    **Explanation:**
+    
+    The visualization above shows the **distribution of planet sizes** found by the *Kepler mission*, measured in Earth's radii.  
+    It reveals that most candidate planets are **quite small, close in size to Earth**, while there are **very few extremely large planets detected**, creating a sharp drop-off on the right side of the graph.
+    """)
+     
+    gr.Image(value="orbital_period.png", show_label=False)
+    gr.Markdown("""
+        This graph displays data from the Kepler mission, showing the relationship between a planet's size (radius in Earth radii) and its orbital period (the time it takes to complete one orbit around its star, in days). It indicates there is a wide range of planet sizes found at various orbital periods, with many small planets orbiting both quickly and slowly, while larger planets are also found across different orbital durations. The plot uses logarithmic scales to show this broad distribution clearly.
+    """)
+    gr.Image(value="pie_chart.png", show_label=False)
+    gr.Markdown("""
+This pie chart shows the average distribution of different false positive scenarios in the Kepler dataset for candidate planets.
+
+Explanation of the terms:
+
+fpp_prob_ueb (37.8%): Probability the signal comes from an Unblended Eclipsing Binary, where two stars orbit each other without blending.
+
+fpp_prob_beb (16.6%): Probability of a Blended Eclipsing Binary, where light from two stars blends and mimics a planetary signal.
+
+fpp_prob_beb_dbl (23.7%): Similar to beb but with double orbital periods involved.
+
+fpp_prob_heb (9.2%): Probability of a Hierarchical Eclipsing Binary, a star orbiting another star in the same system.
+
+fpp_prob_ueb_dbl (10.9%): Double period case for Unblended Eclipsing Binary.
+
+fpp_prob_heb_dbl (1.7%): Double period case for Hierarchical Eclipsing Binary.
+
+These categories represent different ways that signals mimicking planets can actually be caused by binary star systems or their complex interactions, helping scientists distinguish real planets from false alarms in the Kepler data.
+                 
+                  
+    """)
+gr.Image(value="stellar_radius.png", show_label=False)
+gr.Markdown("""
+            Most stars are small, with sizes close to the Sun's. However, the chart highlights that as stars get heavier (more massive), their sizes can become dramatically larger, showing a significant scatter for the heaviest stars. This data comes from the Kepler telescope observations.
+            """)
+
+gr.Image(value="likelihood.png", show_label=False)
+gr.Markdown("""
+It shows that most "planet candidates" (the big yellow/green dots) are large and have a high chance of being a false alarm (high false positive probability). The smaller, darker dots are less likely to be false alarms. The plot shows that planet size and how long they take to orbit their star are highly variable.
+ """)
+
+gr.Image(value="stellar_temp.png", show_label=False)
+gr.Markdown("""
+
+The vast majority of the observed stars have a temperature around 5,700 to 6,000 Kelvin, which is very similar to the temperature of our own Sun. The count quickly drops off for stars that are either much cooler or much hotter than this average.
+ """)
+
 
 if __name__ == "__main__":
     demo.launch(share=True)
