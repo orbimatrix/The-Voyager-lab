@@ -60,4 +60,5 @@ This repository contains data, notebooks, models and a small Gradio demo for exo
 - Uses publicly available NASA Kepler data from the NASA Exoplanet Archive. See notebooks for data source comments and attribution.
 
 ## Contact
+
 - For questions about model internals, open [app.py](http://_vscodecontentref_/32) and [prediction_models.ipynb](http://_vscodecontentref_/33) — the main logic and parameters are documented inline.
